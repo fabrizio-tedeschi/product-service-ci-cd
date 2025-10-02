@@ -47,9 +47,9 @@ jobs:
       - name: Configure SSH key for ec2 access
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          echo "{{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H {{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Run Ansible playbook
         run: |
