@@ -55,8 +55,13 @@ jobs:
       - name: Set up Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
 
+
+
       - name: Run Ansible playbook
         run: |
-          ansible-playbook -i ansible/hosts.ini ansible/deploy-playbook.yml \
-            --extra-vars "artifact_path=./artifact/ app_name=product-service"
+          ansible-playbook \
+          -i "${{ secrets.EC2_HOST }}," ansible/deploy-playbook.yml \
+          --user ${{ secrets.EC2_USER }} \
+          --private-key ~/.ssh/deploy_key \
+          --extra-vars "artifact_path=./artifact/ app_name=product-service"
 
