@@ -1,0 +1,67 @@
+---
+- name: Setup machine and start webserver
+  hosts: awsmachine
+  become: true
+
+  tasks:
+
+    # Set up environment tasks
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Check postgresql installation
+      apt:
+        name: postgresql
+        state: present
+
+    - name: Check postgresql service status
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
+
+    - name: Check OpenJDK 21 installation
+      apt:
+        name: openjdk-21-jdk
+        state: present
+
+    - name: Check maven instllation
+      apt:
+        name: maven
+        state: present
+
+    # App execution tasks
+    - name: Copy .jar file from runner to ec2
+      copy:
+        src: "{{ artifact_path }}/product-service-*.jar"
+        dest: /opt/product-service/product-service.jar
+        mode: '0755'
+
+    - name: Managing .jar execution as a service
+      copy:
+        dest: /etc/systemd/system/webapp.service
+        content: |
+          [Unit]
+          Description=Product Service Webapp
+          After=network.target
+
+          [Service]
+          User=ubuntu
+          ExecStart=/usr/bin/java -jar /opt/product-service/product-service.jar
+          SuccessExitStatus=143
+          Restart=always
+          RestartSec=5
+
+          [Install]
+          WantedBy=multi-user.target
+      become: true
+
+
+    - name: Ricarica systemd e avvia il servizio
+      systemd:
+        name: product-service
+        enabled: true
+        state: restarted
+      become: true
