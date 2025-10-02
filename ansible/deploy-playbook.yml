@@ -1,6 +1,6 @@
 ---
 - name: Setup machine and start webserver
-  hosts: awsmachine
+  hosts: all
   become: true
 
   tasks:
