@@ -61,5 +61,5 @@ jobs:
           -i ${{ secrets.EC2_HOST }}, ansible/deploy-playbook.yml \
           --user ${{ secrets.EC2_USER }} \
           --private-key ~/.ssh/deploy_key \
-          --extra-vars "artifact_path=./artifact/ app_name=product-service"
+          --extra-vars "artifact_path=./artifact app_name=product-service"
 
