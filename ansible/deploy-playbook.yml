@@ -35,7 +35,7 @@
     # App execution tasks
     - name: Copy .jar file from runner to ec2
       copy:
-        src: "{{ artifact_path }}/{{ app_name }}-*.jar"
+        src: "{{ artifact_path }}/{{ app_name }}.jar"
         dest: /opt/product-service/product-service.jar
         mode: '0755'
 

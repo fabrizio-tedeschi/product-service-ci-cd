@@ -24,7 +24,7 @@ jobs:
       - name: Archive artifact
         uses: actions/upload-artifact@v4
         with:
-          name: product-service-app
+          name: product-service
           path: target/*.jar
 
   deploy:
@@ -38,7 +38,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: product-service-app
+          name: product-service
           path: ./artifact
 
       - name: Configure SSH key for ec2 access
