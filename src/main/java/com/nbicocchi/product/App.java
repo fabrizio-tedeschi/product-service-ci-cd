@@ -29,6 +29,8 @@ public class App implements ApplicationRunner {
         new Product("f89b6577-3705-414f-8b01-41c091abb5e0", "Bike", 5.5));
     productRepository.save(
         new Product("b1f4748a-f3cd-4fc3-be58-38316afe1574", "Shirt", 0.2));
+    productRepository.save(
+        new Product("b1f4748a-f3cd-4fc3-be58-38316afe1574", "Hammer", 3.0));
 
     Iterable<Product> products = productRepository.findAll();
     for (Product product : products) {
