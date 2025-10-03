@@ -36,7 +36,7 @@
     - name: Copy .jar file from runner to ec2
       copy:
         src: "{{ artifact_path }}/{{ app_name }}.jar"
-        dest: /opt/product-service/product-service.jar
+        dest: /opt/product-service.jar
         mode: '0755'
 
     - name: Managing .jar execution as a service
@@ -49,7 +49,7 @@
 
           [Service]
           User=ubuntu
-          ExecStart=/usr/bin/java -jar /opt/product-service/product-service.jar
+          ExecStart=/usr/bin/java -jar /opt/product-service.jar
           SuccessExitStatus=143
           Restart=always
           RestartSec=5
@@ -59,9 +59,10 @@
       become: true
 
 
-    - name: Ricarica systemd e avvia il servizio
+    - name: Starting webapp service
       systemd:
-        name: product-service
+        name: webapp
         enabled: true
         state: restarted
       become: true
+
