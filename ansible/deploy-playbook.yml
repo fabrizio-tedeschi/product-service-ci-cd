@@ -5,7 +5,7 @@
 
   vars:
     db_name: jdbc_schema
-    db_user: user
+    db_user: myuser
     db_password: secret
     pg_conf_path: /etc/postgresql/16/main/postgresql.conf
     hba_path: /etc/postgresql/16/main/pg_hba.conf
@@ -34,7 +34,7 @@
         name: openjdk-21-jdk
         state: present
 
-    - name: Check maven instllation
+    - name: Check maven installation
       apt:
         name: maven
         state: present
@@ -66,21 +66,21 @@
     - name: Ensure user existence
       command: >-
         sudo -u postgres psql -c
-        "CREATE USER myuser WITH PASSWORD 'secret';"
+        "CREATE USER {{ db_user }} WITH PASSWORD '{{ db_password }}';"
       become: true
       ignore_errors: true
 
     - name: Ensure db existence
       command: >-
         sudo -u postgres psql -c
-        "CREATE DATABASE jdbc_schema OWNER myuser;"
+        "CREATE DATABASE jdbc_schema OWNER {{ db_user }};"
       become: true
       ignore_errors: true
 
     - name: Grant privileges
       command: >-
         sudo -u postgres psql -c
-        "GRANT ALL PRIVILEGES ON DATABASE jdbc_schema TO myuser;"
+        "GRANT ALL PRIVILEGES ON DATABASE jdbc_schema TO {{ db_user }};"
       become: true
       ignore_errors: true
 
