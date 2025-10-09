@@ -1,0 +1,63 @@
+name: Infrastructure provisioning
+
+on:
+  workflow_dispatch:
+
+jobs:
+  infrastructure:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    environment:
+      name: Infrastructure provisioning
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.3
+
+      - name: Terraform init
+        id: init
+        run: terraform init -input=false
+        working-directory: terraform
+
+      - name: Terraform plan
+        id: plan
+        run: terraform plan -input=false -var-file=terraform.tfvars
+        working-directory: terraform
+
+      - name: Terraform apply
+        id: apply
+        run: terraform apply -input=false -auto-approve -var-file=terraform.tfvars
+        working-directory: terraform
+
+      - name: Get terraform output
+        id: output
+        run: |
+          EC2_IP=$(terraform output -raw instance_public_ip)
+          echo "ec2_ip=$EC2_IP" >> $GITHUB_OUTPUT
+        working-directory: terraform
+
+      - name: Update secret
+        uses: gliech/create-github-secret-action@v1  
+        with:  
+          name: EC2_HOST  
+          value: ${{ steps.output.outputs.ec2_ip }}
+          pa_token: ${{ secrets.PAT_TOKEN }}  
+
+
+      - name: Verification
+        run: echo "Saved IP ${{ steps.output.outputs.ec2_ip }} into EC2_HOST"
