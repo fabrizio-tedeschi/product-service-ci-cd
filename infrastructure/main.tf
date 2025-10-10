@@ -21,7 +21,7 @@ resource "aws_security_group" "product_service_sg" {
   description = "Allow SSH and application traffic"
 
   ingress {
-    description = "SSH Access"
+    description = "SSH access"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -29,9 +29,17 @@ resource "aws_security_group" "product_service_sg" {
   }
 
   ingress {
-    description = "Webapp Port"
+    description = "Webapp port"
     from_port   = 7001
     to_port     = 7001
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Webapp docker ort"
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
