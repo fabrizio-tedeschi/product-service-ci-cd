@@ -37,7 +37,7 @@ resource "aws_security_group" "product_service_sg" {
   }
 
   ingress {
-    description = "Webapp docker ort"
+    description = "Webapp docker port"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
