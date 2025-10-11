@@ -7,14 +7,17 @@ The aim of this repository is to show some examples of github workflows that int
 You can find the following workflows:
 * `infrastructure-workflow.yml`: creates and sets up a new AWS EC2 instance for deployment operations.
 * `deploy-workflow.yml`: uses GitHub actions to compile the project, and Ansible to set up the EC2 instance and start the application.
-* `docker-workflow.yml`: uses GiThub actions and Ansible to set up the EC2 instance installing docker and starting containers defined int the `docker-compose.yml` file.
+* `docker-workflow.yml`: uses GitHub actions and Ansible to set up the EC2 instance installing docker and starting containers defined int the `docker-compose.yml` file.
 
 >[!NOTE]
 >Some workflow runs on `push`. In this case you have to manually trigger the workflows going to the `Actions` section of this repository an then press the `Run workflow` button.
 
 ## Set up repository
 
-If you want to run the workflows in this repository you need to set up some secret variables.
+>[!WARNING]
+> DO NOT try to modify secrets, commit or push file on this repository (you are not allowed to do something like this). Fork this repository and make there all your experiments.
+
+If you want to run the workflows in this repository you need first to set up some secret variables.
 
 >[!TIP]
 > A **secret** is a variable used to store sensitive information like API key, token and password. You can read more about GitHub secrets [here](https://docs.github.com/en/actions/concepts/security/secrets).
@@ -22,15 +25,15 @@ If you want to run the workflows in this repository you need to set up some secr
 >To set up a secret go to repository settings > security > secret and variables > actions.
 
 
-Follow the next steps to understand and setup the scret you need to run github workflows.
+Follow the next steps to understand and setup the secret you need to run github workflows.
 
 ### Get AWS access key
 
 > Required to run [infrastructure-workflow.yml](.github/workflows/infrastructure-workflow.yml)
 
-AWS access keys are long-term credentials for IAM users and allows them to sign programmatic requests to AWS CLI or AWS API. You can read more about AWS access key [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).
+AWS access keys are long-term credentials for root and IAM users and allows them to sign programmatic requests to AWS CLI or AWS API. You can read more about AWS access keys [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).
 
-When you want to use terraform for generating a new cloud infrastructure you will need AWS access key such as:
+When you want to use terraform for generating a new cloud infrastructure you will need AWS access keys such as:
 * An **AWS access key ID**: public user identifier. Same functions as username.
 * An **AWS secret access key**: private user key. Same function as password. Needs to be carefully protected.
 
@@ -57,7 +60,7 @@ Copy and paste your generated token into a secret variable named `PAT_TOKEN`.
 > [deploy-workflow.yml](.github/workflows/deploy-workflow.yml), 
 > [docker-workflow.yml](.github/workflows/docker-workflow.yml)
 
-**SSH keypair** is a cryptographic keypair used for secure authentications in SSH connections. Ypu can read more about SSH keypair [here](https://www.ssh.com/academy/ssh/public-key-authentication).
+**SSH keypair** is a cryptographic keypair used for secure authentications in SSH connections. You can read more about SSH keypair [here](https://www.ssh.com/academy/ssh/public-key-authentication).
 
 When you want to communicate with an AWS EC2 instance you need an SSH keypair and you need set up your instance to accept conncetions with your public key.
 
@@ -68,7 +71,7 @@ cd ~/.ssh
 ssh-keygen -t ed25519 -C "deploy_key" -f ./deploy_key -N ""
 ```
 
-You can view key valuse using:
+You can view key values using:
 
 ```bash
 cd ~/.ssh
