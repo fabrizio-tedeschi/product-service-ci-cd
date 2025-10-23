@@ -39,3 +39,12 @@ Secrets:
 > `-----BEGIN OPENSSH PRIVATE KEY-----`
 >
 > `-----END OPENSSH PRIVATE KEY-----`
+
+## Test SSH connection to the machine
+
+Once you triggered the infrastructure workflow you can test the SSH connection to the machine using teh following commands from your terminal:
+
+```bash
+cd ~/.ssh
+ssh -i my-ec2-key.pem ubuntu@<hostname>
+```
